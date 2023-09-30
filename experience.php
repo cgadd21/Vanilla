@@ -19,7 +19,7 @@
             <h4>Internship</h4>
             <h5>March 2023 - Present</h5>
             <ul>
-                <li>Designed and developed a web application using Blazor that used Razor components that assigned and logged employees’ labor assignments, tracked inventory, printed labels, displayed shipping schedules, and searched part locations.</li>
+                <li>Designed and developed a web application using Blazor WebAssembly that used Razor components that assigned and logged employees’ labor assignments, generated non-conforming material reports, tracked inventory, scrap, and yield, printed labels, displayed shipping schedules, searched part location, structure, and documentation.</li>
                 <li>Implemented APIs to perform HTTPS requests to SQL database using Dapper.</li>
                 <li>Integrated GitLab into the project for version control.</li>
             </ul>
