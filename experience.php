@@ -19,7 +19,7 @@
             <h4>Internship</h4>
             <h5>March 2023 - Present</h5>
             <ul>
-                <li>Designed and developed a web application using Blazor WebAssembly that used Razor components that assigned and logged employees’ labor assignments, generated non-conforming material reports, tracked inventory, scrap, and yield, printed labels, displayed shipping schedules, searched part location, structure, and documentation.</li>
+                <li>Designed and developed a web application using Blazor WebAssembly that used Razor components that assigned and logged employees’ labor assignments, generated non-conforming material reports, tracked inventory, scrap and yield, printed labels, displayed shipping schedules, searched part location, structure, and documentation.</li>
                 <li>Implemented APIs to perform HTTPS requests to SQL database using Dapper.</li>
                 <li>Integrated GitLab into the project for version control.</li>
             </ul>
@@ -43,7 +43,7 @@
             <h4>Full-time</h4>
             <h5>July 2021- January 2022 | June 2022 - August 2022</h5>
             <ul>
-                <li>Assisted customers in finding their device to match their needs.</li>
+                <li>Assisted customers in finding a device to match their needs.</li>
                 <li>Developed skills in many departments to become more well-rounded, and to aid co-workers.</li>
                 <li>Opened, closed, and prepared the store for review from upper management.</li>
                 <li>Supported new co-workers training process through shadowing and reverse shadowing.</li>
