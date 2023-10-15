@@ -10,12 +10,8 @@
         grid-column: 1/3;
     }
 
-    h3 {
-        grid-column: 1/2;
-    }
-
     ul {
-        grid-column: 1/2;
+        grid-column: 1/3;
     }
 </style>
 
@@ -27,16 +23,13 @@
 
         <?php include "inc/nav.php"; ?>
 
-        <h2>I design and develop software.</h2>
+        <h2>I specialize in:</h2>
 
-        <h3>I specialize in:</h3>
         <ul>
-            <li>Object-Oriented Programming</li>
-            <li>Web Development</li>
-            <li>Database Applications</li>
+            <li class="fade-in-item">Object-Oriented Programming</li>
+            <li class="fade-in-item">Web Development</li>
+            <li class="fade-in-item">Database Applications</li>
         </ul>
-
-        <img src="images/me.png" alt="me">
 
         <?php include "inc/footer.php"; ?>
 
