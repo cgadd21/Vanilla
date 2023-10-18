@@ -1,4 +1,4 @@
-<?php $currentPage = "Education"; ?>
+<?php $currentPage = "Volunteer"; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,6 +6,7 @@
 <?php include "inc/head.php"; ?>
 
 <body>
+    
     <div class="container">
 
         <?php include "inc/header.php"; ?>
@@ -15,7 +16,7 @@
         <?php
             include('../conn.php');
 
-            $sql = "SELECT * FROM Education";
+            $sql = "SELECT * FROM Volunteer";
             $result = $conn->query($sql);
 
             if($result){
@@ -27,9 +28,9 @@
 
             foreach($records as $this_row){
                 echo '<div>';
-                echo '<h2>'.$this_row['InstitutionName'].'</h2>';
-                echo '<h3>'.$this_row['Degree'].'</h3>';
-                echo '<h4>'.$this_row['GraduationYear'].'</h4>';
+                echo '<h2>'.$this_row['JobTitle'].'</h2>';
+                echo '<h3><a href="'.$this_row['Link'].'" target="_blank">'.$this_row['CompanyName'].'</a></h3>';
+                echo '<p>'.$this_row['Description'].'</p>';
                 echo '</div>';
             }
 

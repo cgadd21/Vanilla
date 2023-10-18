@@ -5,19 +5,9 @@
 
 <?php include "inc/head.php"; ?>
 
-<style>
-    h2 {
-        grid-column: 1/3;
-    }
-
-    ul {
-        grid-column: 1/3;
-    }
-</style>
-
 <body>
     
-    <div class="container page-layout">
+    <div class="container">
 
         <?php include "inc/header.php"; ?>
 

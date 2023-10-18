@@ -7,78 +7,46 @@
 
 <body>
     
-    <div class="container page-layout">
+    <div class="container">
 
         <?php include "inc/header.php"; ?>
 
         <?php include "inc/nav.php"; ?>
         
-        <div>
-            <h2>Object-Oriented Programming</h2>
-            <ul>
-                <li>Java</li>
-                <li>C#</li>
-            </ul>
-        </div>
+        <?php
+            include('../conn.php');
 
-        <div>
-            <h2>Web Development</h2>
-            <ul>
-                <li>PHP</li>
-                <li>JavaScript</li>
-                <li>CSS</li>
-                <li>HTML</li>
-                <li>DHTML</li>
-                <li>Document Object Model</li>
-            </ul>
-        </div>
-        
-        <div>
-            <h2>Database Applications</h2>
-            <ul>
-                <li>SQL</li>
-                <li>MySQL</li>
-                <li>Dapper ORM</li>
-                <li>Version Control</li>
-                <li>Gitlab</li>
-                <li>GitHub</li>
-                <li>Software Troubleshooting</li>
-            </ul>
-        </div>
+            $sql = "SELECT * FROM Skill";
+            $result = $conn->query($sql);
 
-        <div>
-            <h2>Blazor</h2>
-            <ul>
-                <li>ASP.NET Core</li>
-                <li>ASP.NET Razor</li>
-                <li>Component Architecture</li>
-                <li>State Management</li>
-            </ul>
-        </div>
+            if($result){
+                $records = [];
+                while($rowHolder = $result->fetch_assoc()){
+                    $records[] = $rowHolder;
+                }
+            }
 
-        <div>
-            <h2>Application Programming Interfaces (API)</h2>
-            <ul>
-                <li>ASP.NET Web API</li>
-                <li>Rest APIs</li>
-                <li>MySQLi</li>
-            </ul>
-        </div>
-        
-        <div>
-            <h2>Scripting</h2>
-            <ul>
-                <li>Python</li>
-                <li>Linux</li>
-                <li>Bash</li>
-            </ul>
-        </div>
+            $groupedRecords = array();
 
-        <h2>Network Design</h2>
+            foreach ($records as $this_row) {
+                $category = $this_row['Category'];
+                if (!isset($groupedRecords[$category])) {
+                    $groupedRecords[$category] = array();
+                }
+                $groupedRecords[$category][] = $this_row;
+            }
 
-        <h2>Cybersecurity</h2>
+            foreach ($groupedRecords as $category => $categoryRecords) {
+                echo '<div>';
+                echo '<h2>' . $category . '</h2>';
+                foreach ($categoryRecords as $record) {
+                    echo '<h3>' . $record['SkillName'] . '</h3>';
+                }
+                echo '</div>';
+            }
 
-        <h2>Sales & Marketing</h2>
+            $conn->close();
+        ?>
 
         <?php include "inc/footer.php"; ?>
 
