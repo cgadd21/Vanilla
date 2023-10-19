@@ -37,7 +37,7 @@
             }
 
             foreach ($groupedRecords as $category => $categoryRecords) {
-                echo '<div>';
+                echo '<div class="fade-in">';
                 echo '<h2>' . $category . '</h2>';
                 foreach ($categoryRecords as $record) {
                     echo '<h3>' . $record['SkillName'] . '</h3>';

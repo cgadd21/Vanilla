@@ -27,7 +27,7 @@
             }
 
             foreach($records as $this_row){
-                echo '<div>';
+                echo '<div class="fade-in">';
                 echo '<h2><a href="'.$this_row['ProjectLink'].'" target="_blank">'.$this_row['ProjectName'].'</a></h2>';
                 echo '<p>'.$this_row['ProjectDescription'].'</p>';
                 echo '</div>';

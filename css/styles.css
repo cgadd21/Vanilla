@@ -86,7 +86,7 @@ a:active {
     }
 }
 
-.fade-in-item {
+.fade-in {
     animation: fadeIn 2s ease forwards;
     opacity: 0;
 }

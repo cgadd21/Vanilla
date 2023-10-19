@@ -26,7 +26,7 @@
             }
 
             foreach($records as $this_row){
-                echo '<div>';
+                echo '<div class="fade-in">';
                 echo '<h2>'.$this_row['InstitutionName'].'</h2>';
                 echo '<h3>'.$this_row['Degree'].'</h3>';
                 echo '<h4>'.$this_row['GraduationYear'].'</h4>';

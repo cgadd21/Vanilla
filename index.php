@@ -12,14 +12,15 @@
         <?php include "inc/header.php"; ?>
 
         <?php include "inc/nav.php"; ?>
+        <div class="fade-in">
+            <h2>I specialize in:</h2>
 
-        <h2>I specialize in:</h2>
-
-        <ul>
-            <li class="fade-in-item">Object-Oriented Programming</li>
-            <li class="fade-in-item">Web Development</li>
-            <li class="fade-in-item">Database Applications</li>
-        </ul>
+            <ul>
+                <li>Object-Oriented Programming</li>
+                <li>Web Development</li>
+                <li>Database Applications</li>
+            </ul>
+        </div>
 
         <?php include "inc/footer.php"; ?>
 
