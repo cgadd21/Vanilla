@@ -6,6 +6,7 @@
 <?php include "inc/head.php"; ?>
 
 <body>
+    
     <div class="container">
 
         <?php include "inc/header.php"; ?>
