@@ -50,142 +50,104 @@
                 {
                     if (is_array($val))
                     {
+                        echo '<div class="fade-in">';
                         print_recursive($val);
+                        echo '</div>';
                     } 
                     elseif($key == 'stationID') 
                     {
-                        echo ucfirst(("$key = $val <br/>"));
+                        echo (("<p>StationID = $val</p>"));
                     } 
                     elseif($key == 'obsTimeLocal') 
                     {
                         $date = date_create($val);
-                        echo "Local Time = " . date_format($date, "m/d/Y @ G:i:s") . "<br/>";
+                        echo "<p>Local Time = ".date_format($date, "m/d/Y @ G:i:s")."<p>";
                     } 
                     elseif ($key == 'neighborhood')
                     {
-                        echo ucfirst(("$key = $val <br/>"));
+                        echo (("<p>Neighborhood = $val</p>"));
                     } 
                     elseif ($key == 'country')
                     {
-                        echo ucfirst(("$key = $val <br/>"));
+                        echo (("<p>Country = $val</p>"));
                     } 
                     elseif ($key == 'winddir')
                     {
-                        echo("Wind Direction = <b>".get_wind_cardinal($val)."</b> <br/>");
+                        $direction = $val / 22.5 + 0.5;
+                        $cardinal_array = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+                        $wind_cardinal = $cardinal_array[($direction % 16)];
+                        echo("<p>Wind Direction = $wind_cardinal</p>");
                     } 
                     elseif ($key == 'humidity')
                     {
-                        echo ucfirst(("$key = <b>$val%</b> <br/>"));
+                        echo (("<p>Humidity = <b>$val%</b></p>"));
                     } 
-                    elseif ($key == 'temp')
-                    {
+                    elseif ($key == 'temp') {
                         $val = number_format($val, 1);
-
-                        if ($val < "0") 
-                        {
-                            echo "Temperature = " . "<font size='5' color='Indigo'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "0" && $val <= "10" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='DarkBlue'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "10" && $val <= "20" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='DodgerBlue'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "20" && $val <= "30" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='LightSkyBlue'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "30" && $val <= "35" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='Cyan'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "35" && $val <= "40" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='MediumAquaMarine'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "40" && $val <= "45" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='SpringGreen'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "45" && $val <= "50" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='GreenYellow'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "50" && $val <= "55" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='Yellow'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
+                        $colors = [
+                            0 => 'Indigo',
+                            10 => 'DarkBlue',
+                            20 => 'DodgerBlue',
+                            30 => 'LightSkyBlue',
+                            35 => 'Cyan',
+                            40 => 'MediumAquaMarine',
+                            45 => 'SpringGreen',
+                            50 => 'GreenYellow',
+                            55 => 'Yellow',
+                            60 => 'Gold',
+                            70 => 'Orange',
+                            80 => 'DarkOrange',
+                            90 => 'Red',
+                        ];
+                    
+                        foreach ($colors as $threshold => $color) {
+                            if ($val <= $threshold) {
+                                echo "<p>Temperature = <b style='color: $color;'>$val&deg;F</b></p>";
+                                break;
+                            }
                         }
-                        elseif ($val > "55" && $val <= "60" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='Gold'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "60" && $val <= "70" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='Orange'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "70" && $val <= "80" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='DarkOrange'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "80" && $val <= "90" ) 
-                        {
-                            echo "Temperature = " . "<font size='5' color='Red'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        } 
-                        elseif ($val > "90") 
-                        {
-                            echo "Temperature = " . "<font size='5' color='Crimson'>" . "<b>$val&deg;F</b>" . "</font>" . "<br/>" . "<br/>";
-                        }
-                    } 
+                    }
                     elseif ($key == 'heatIndex')
                     {
                         $val = number_format($val, 1);
-                        echo("Feels Like = <b>$val&deg;F</b> <br/>");
+                        echo ("<p>Feels Like = <b>$val&deg;F</b></p>");
                     } 
                     elseif ($key == 'dewpt')
                     {
                         $val = number_format($val, 1);
-                        echo("Dew Point = <b>$val&deg;F</b> <br/>");
+                        echo ("<p>Dew Point = <b>$val&deg;F</b></p>");
                     } 
                     elseif ($key == 'windChill')
                     {
-                        echo("Wind Chill = <b>$val&deg;F</b> <br/>");
+                        echo ("<p>Wind Chill = <b>$val&deg;F</b></p>");
                     } 
                     elseif ($key == 'windSpeed')
                     {
                         $val = number_format($val, 1);
-                        echo("Wind Speed = <b>$val</b> mph <br/>");
+                        echo ("<p>Wind Speed = <b>$val</b> mph</p>");
                     } 
                     elseif ($key == 'windGust')
                     {
                         $val = number_format($val, 1);
-                        echo("Wind Gust = <b>$val</b> mph <br/>");
+                        echo ("<p>Wind Gust = <b>$val</b> mph</p>");
                     } 
                     elseif ($key == 'pressure')
                     {
                         $val = number_format($val, 2);
-                        echo("Pressure = <b>$val</b> in<br/>");
+                        echo ("<p>Pressure = <b>$val</b> in</p>");
                     } 
                     elseif ($key == 'precipRate')
                     {
                         $val = number_format($val, 2);
-                        echo("Precipitation Rate = <b>$val</b> in<br/>");
+                        echo ("<p>Precipitation Rate = <b>$val</b> in</p>");
                     } 
                     elseif ($key == 'precipTotal')
                     {
                         $val = number_format($val, 2);
-                        echo("Precipition Total = <b>$val</b> in<br/>");
+                        echo ("<p>Precipition Total = <b>$val</b> in</p>");
                     }
                 }
                 return;
-            }
-
-            function get_wind_cardinal($val) 
-            {
-                $direction = $val / 22.5 + .5;
-                $cardinal_array = [ "N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW" ];
-                return $cardinal_array[ ( $direction % 16 ) ];
             }
 
         ?>
