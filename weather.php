@@ -14,142 +14,112 @@
         <?php include "inc/nav.php"; ?>
 
         <?php
+            class WeatherData
+            {
+                public $stationID;
+                public $obsTimeLocal;
+                public $neighborhood;
+                public $country;
+                public $windDirection;
+                public $humidity;
+                public $temperature;
+                public $heatIndex;
+                public $dewPoint;
+                public $windChill;
+                public $windSpeed;
+                public $windGust;
+                public $pressure;
+                public $precipitationRate;
+                public $precipitationTotal;
+            
+                public function __construct($data)
+                {
+                    $observation = $data['observations'][0];
+            
+                    $this->stationID = $observation['stationID'];
+                    $this->obsTimeLocal = date_format(date_create($observation['obsTimeLocal']), "m/d/Y @ G:i:s");
+                    $this->neighborhood = $observation['neighborhood'];
+                    $this->country = $observation['country'];
+                    $this->windDirection = $this->calculateWindDirection($observation['winddir']);
+                    $this->humidity = $observation['humidity'].'%';
+                    $this->temperature = number_format($observation['imperial']['temp'], 1).'°F';
+                    $this->heatIndex = number_format($observation['imperial']['heatIndex'], 1).'°F';
+                    $this->dewPoint = number_format($observation['imperial']['dewpt'], 1).'°F';
+                    $this->windChill = number_format($observation['imperial']['windChill'], 1).'°F';
+                    $this->windSpeed = number_format($observation['imperial']['windSpeed'], 1).' mph';
+                    $this->windGust = number_format($observation['imperial']['windGust'], 1).' mph';
+                    $this->pressure = number_format($observation['imperial']['pressure'], 2).' in';
+                    $this->precipitationRate = number_format($observation['imperial']['precipRate'], 2).' in'; 
+                    $this->precipitationTotal = number_format($observation['imperial']['precipTotal'], 2).' in';
+                }
 
+                public function getColorForTemperature()
+                {
+                    $colors = [-30 => 'DarkViolet', -20 => 'Purple', -10 => 'BlueViolet', 0 => 'Indigo', 10 => 'DarkBlue', 20 => 'DodgerBlue', 30 => 'LightSkyBlue', 35 => 'Cyan', 40 => 'MediumAquaMarine', 45 => 'SpringGreen', 50 => 'GreenYellow', 55 => 'Yellow', 60 => 'Gold', 70 => 'Orange', 80 => 'DarkOrange', 90 => 'Red'];
+
+                    foreach ($colors as $threshold => $color)
+                    {
+                        if ($this->temperature <= $threshold)
+                        {
+                            return $color;
+                        }
+                    }
+
+                    return 'White';
+                }
+            
+                private function calculateWindDirection($degree)
+                {
+                    $directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+                    return $directions[round($degree / 22.5) % 16];
+                }
+            }
+            
             include('../weatherConn.php');
 
             $arr = json_decode($response, true);
 
-            switch (json_last_error())
+            switch (json_last_error()) 
             {
                 case JSON_ERROR_NONE:
-                    print_recursive($arr);
-                break;
+                    $weatherData = new WeatherData($arr);
+                    echo '<div class="fade-in">';
+                    echo "<p>StationID = $weatherData->stationID</p>";
+                    echo "<p>Local Time = $weatherData->obsTimeLocal</p>";
+                    echo "<p>Neighborhood = $weatherData->neighborhood</p>";
+                    echo "<p>Country = $weatherData->country</p>";
+                    echo "<p>Wind Direction = $weatherData->windDirection</p>";
+                    echo "<p>Humidity = $weatherData->humidity</p>";
+                    echo "<p>Temperature = <b style='color: ".$weatherData->getColorForTemperature() .";'>".$weatherData->temperature."</b></p>";
+                    echo "<p>Heat Index = $weatherData->heatIndex</p>";
+                    echo "<p>Dew Point = $weatherData->dewPoint</p>";
+                    echo "<p>Wind Chill = $weatherData->windChill</p>";
+                    echo "<p>Wind Speed = $weatherData->windSpeed</p>";
+                    echo "<p>Wind Gust = $weatherData->windGust</p>";
+                    echo "<p>Pressure = $weatherData->pressure</p>";
+                    echo "<p>Precipitation Rate = $weatherData->precipitationRate</p>";
+                    echo "<p>Precipitation Total = $weatherData->precipitationTotal</p>";
+                    echo '</div>';
+                    break;
                 case JSON_ERROR_DEPTH:
-                    echo ' - Maximum stack depth exceeded';
-                break;
+                    echo "Maximum stack depth exceeded";
+                    break;
                 case JSON_ERROR_STATE_MISMATCH:
-                    echo ' - Underflow or the modes mismatch';
-                break;
+                    echo "Invalid or malformed JSON";
+                    break;
                 case JSON_ERROR_CTRL_CHAR:
-                    echo ' - Unexpected control character found';
-                break;
+                    echo "Control character error";
+                    break;
                 case JSON_ERROR_SYNTAX:
-                    echo ' - Syntax error, malformed JSON';
-                break;
+                    echo "Syntax error";
+                    break;
                 case JSON_ERROR_UTF8:
-                    echo ' - Malformed UTF-8 characters, possibly incorrectly encoded';
-                break;
+                    echo "Malformed UTF-8 characters";
+                    break;
                 default:
-                    echo ' - Unknown error';
-                break;
+                    echo "Unknown error";
+                    break;
             }
-
-            function print_recursive($arr)
-            {
-                foreach ($arr as $key => $val)
-                {
-                    if (is_array($val))
-                    {
-                        echo '<div class="fade-in">';
-                        print_recursive($val);
-                        echo '</div>';
-                    } 
-                    elseif($key == 'stationID') 
-                    {
-                        echo (("<p>StationID = $val</p>"));
-                    } 
-                    elseif($key == 'obsTimeLocal') 
-                    {
-                        $date = date_create($val);
-                        echo "<p>Local Time = ".date_format($date, "m/d/Y @ G:i:s")."<p>";
-                    } 
-                    elseif ($key == 'neighborhood')
-                    {
-                        echo (("<p>Neighborhood = $val</p>"));
-                    } 
-                    elseif ($key == 'country')
-                    {
-                        echo (("<p>Country = $val</p>"));
-                    } 
-                    elseif ($key == 'winddir')
-                    {
-                        $direction = $val / 22.5 + 0.5;
-                        $cardinal_array = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-                        $wind_cardinal = $cardinal_array[($direction % 16)];
-                        echo("<p>Wind Direction = $wind_cardinal</p>");
-                    } 
-                    elseif ($key == 'humidity')
-                    {
-                        echo (("<p>Humidity = <b>$val%</b></p>"));
-                    } 
-                    elseif ($key == 'temp') {
-                        $val = number_format($val, 1);
-                        $colors = [
-                            0 => 'Indigo',
-                            10 => 'DarkBlue',
-                            20 => 'DodgerBlue',
-                            30 => 'LightSkyBlue',
-                            35 => 'Cyan',
-                            40 => 'MediumAquaMarine',
-                            45 => 'SpringGreen',
-                            50 => 'GreenYellow',
-                            55 => 'Yellow',
-                            60 => 'Gold',
-                            70 => 'Orange',
-                            80 => 'DarkOrange',
-                            90 => 'Red',
-                        ];
-                    
-                        foreach ($colors as $threshold => $color) {
-                            if ($val <= $threshold) {
-                                echo "<p>Temperature = <b style='color: $color;'>$val&deg;F</b></p>";
-                                break;
-                            }
-                        }
-                    }
-                    elseif ($key == 'heatIndex')
-                    {
-                        $val = number_format($val, 1);
-                        echo ("<p>Feels Like = <b>$val&deg;F</b></p>");
-                    } 
-                    elseif ($key == 'dewpt')
-                    {
-                        $val = number_format($val, 1);
-                        echo ("<p>Dew Point = <b>$val&deg;F</b></p>");
-                    } 
-                    elseif ($key == 'windChill')
-                    {
-                        echo ("<p>Wind Chill = <b>$val&deg;F</b></p>");
-                    } 
-                    elseif ($key == 'windSpeed')
-                    {
-                        $val = number_format($val, 1);
-                        echo ("<p>Wind Speed = <b>$val</b> mph</p>");
-                    } 
-                    elseif ($key == 'windGust')
-                    {
-                        $val = number_format($val, 1);
-                        echo ("<p>Wind Gust = <b>$val</b> mph</p>");
-                    } 
-                    elseif ($key == 'pressure')
-                    {
-                        $val = number_format($val, 2);
-                        echo ("<p>Pressure = <b>$val</b> in</p>");
-                    } 
-                    elseif ($key == 'precipRate')
-                    {
-                        $val = number_format($val, 2);
-                        echo ("<p>Precipitation Rate = <b>$val</b> in</p>");
-                    } 
-                    elseif ($key == 'precipTotal')
-                    {
-                        $val = number_format($val, 2);
-                        echo ("<p>Precipition Total = <b>$val</b> in</p>");
-                    }
-                }
-                return;
-            }
-
         ?>
 
         <?php include "inc/footer.php"; ?>
